@@ -1,0 +1,33 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. TABLES.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-TABLE.
+           05 WS-ROW OCCURS 5 TIMES ASCENDING KEY IS WS-KEY INDEXED BY WS-IDX.
+               10 WS-KEY PIC 9(3).
+               10 WS-DATA PIC X(10).
+       01 WS-SEARCH-KEY PIC 9(3) VALUE 3.
+       01 WS-FOUND PIC X VALUE 'N'.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           MOVE 1 TO WS-KEY(1). MOVE 'ONE' TO WS-DATA(1).
+           MOVE 2 TO WS-KEY(2). MOVE 'TWO' TO WS-DATA(2).
+           MOVE 3 TO WS-KEY(3). MOVE 'THREE' TO WS-DATA(3).
+           MOVE 4 TO WS-KEY(4). MOVE 'FOUR' TO WS-DATA(4).
+           MOVE 5 TO WS-KEY(5). MOVE 'FIVE' TO WS-DATA(5).
+
+           SEARCH WS-ROW
+               AT END DISPLAY 'NOT FOUND SEQUENTIAL'
+               WHEN WS-KEY(WS-IDX) = WS-SEARCH-KEY
+                   DISPLAY WS-DATA(WS-IDX)
+           END-SEARCH.
+
+           SEARCH ALL WS-ROW
+               AT END DISPLAY 'NOT FOUND BINARY'
+               WHEN WS-KEY(WS-IDX) = WS-SEARCH-KEY
+                   DISPLAY WS-DATA(WS-IDX)
+           END-SEARCH.
+
+           STOP RUN.
