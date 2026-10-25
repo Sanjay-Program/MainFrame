@@ -1,0 +1,23 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. GROUPITEMS.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-EMPLOYEE.
+           05 WS-EMP-ID PIC 9(5).
+           05 WS-EMP-NAME PIC X(20).
+           05 WS-EMP-SALARY PIC 9(7)V99.
+           05 WS-EMP-DEPT PIC X(10).
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           MOVE 10001 TO WS-EMP-ID.
+           MOVE 'JOHN DOE' TO WS-EMP-NAME.
+           MOVE 5000000 TO WS-EMP-SALARY.
+           MOVE 'SALES' TO WS-EMP-DEPT.
+
+           DISPLAY WS-EMP-ID.
+           DISPLAY WS-EMP-NAME.
+           DISPLAY WS-EMP-SALARY.
+           DISPLAY WS-EMP-DEPT.
+           STOP RUN.
