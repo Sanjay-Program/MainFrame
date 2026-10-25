@@ -1,0 +1,32 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. REDEFS.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-DATE.
+           05 WS-YEAR PIC 9(4).
+           05 WS-MONTH PIC 99.
+           05 WS-DAY PIC 99.
+       01 WS-DATE-REDEF REDEFINES WS-DATE PIC X(8).
+       01 WS-AREA PIC X(10).
+       01 WS-A-REDEF REDEFINES WS-AREA.
+           05 WS-NUM PIC 9(8).
+       01 WS-FULL-NAME.
+           05 WS-FNAME PIC X(15).
+           05 WS-LNAME PIC X(15).
+       01 WS-NAME-SHORT RENAMES WS-FULL-NAME.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           MOVE 2026 TO WS-YEAR.
+           MOVE 11 TO WS-MONTH.
+           MOVE 21 TO WS-DAY.
+           DISPLAY WS-DATE-REDEF.
+
+           MOVE '12345678' TO WS-AREA.
+           DISPLAY WS-NUM.
+
+           MOVE 'SANJAY' TO WS-FNAME.
+           MOVE 'KUMAR' TO WS-LNAME.
+           DISPLAY WS-NAME-SHORT.
+           STOP RUN.
