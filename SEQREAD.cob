@@ -1,0 +1,32 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. SEQREAD.
+
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT IN-FILE ASSIGN TO IN-FILE.
+
+       DATA DIVISION.
+       FILE SECTION.
+       FD IN-FILE.
+       01 IN-RECORD PIC X(80).
+
+       WORKING-STORAGE SECTION.
+       01 WS-EOF PIC X VALUE 'N'.
+       01 WS-COUNT PIC 9(4) VALUE 0.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           OPEN INPUT IN-FILE.
+           PERFORM READ-PARA UNTIL WS-EOF = 'Y'.
+           CLOSE IN-FILE.
+           DISPLAY 'RECORDS READ ' WS-COUNT.
+           STOP RUN.
+
+       READ-PARA.
+           READ IN-FILE
+               AT END MOVE 'Y' TO WS-EOF
+               NOT AT END
+                   COMPUTE WS-COUNT = WS-COUNT + 1
+                   DISPLAY IN-RECORD
+           END-READ.
