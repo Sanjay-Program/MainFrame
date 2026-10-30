@@ -1,0 +1,31 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. FILESTATUS.
+
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT IN-FILE ASSIGN TO IN-FILE
+               FILE STATUS IS WS-STATUS.
+
+       DATA DIVISION.
+       FILE SECTION.
+       FD IN-FILE.
+       01 IN-RECORD PIC X(80).
+
+       WORKING-STORAGE SECTION.
+       01 WS-STATUS PIC XX.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           OPEN INPUT IN-FILE.
+           IF WS-STATUS = '00'
+               DISPLAY 'OPEN SUCCESS'
+           ELSE
+               DISPLAY 'OPEN FAILED ' WS-STATUS
+           END-IF.
+           READ IN-FILE
+               AT END DISPLAY 'END OF FILE'
+               INVALID KEY DISPLAY 'INVALID KEY ' WS-STATUS
+           END-READ.
+           CLOSE IN-FILE.
+           STOP RUN.
