@@ -1,0 +1,55 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. SORTPROG.
+
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT SORT-FILE ASSIGN TO SORT-FILE.
+           SELECT IN-FILE ASSIGN TO IN-FILE.
+           SELECT OUT-FILE ASSIGN TO OUT-FILE.
+
+       DATA DIVISION.
+       FILE SECTION.
+       SD SORT-FILE.
+       01 SORT-RECORD PIC X(80).
+       FD IN-FILE.
+       01 IN-RECORD PIC X(80).
+       FD OUT-FILE.
+       01 OUT-RECORD PIC X(80).
+
+       WORKING-STORAGE SECTION.
+       01 WS-EOF PIC X VALUE 'N'.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           OPEN INPUT IN-FILE.
+           OPEN OUTPUT OUT-FILE.
+           PERFORM READ-PARA UNTIL WS-EOF = 'Y'.
+           CLOSE IN-FILE.
+           RELEASE SORT-RECORD FROM IN-RECORD.
+           SORT SORT-FILE ASCENDING KEY SORT-RECORD
+               INPUT PROCEDURE IS INPUT-PROC
+               OUTPUT PROCEDURE IS OUTPUT-PROC.
+           CLOSE OUT-FILE.
+           STOP RUN.
+
+       READ-PARA.
+           READ IN-FILE
+               AT END MOVE 'Y' TO WS-EOF
+               NOT AT END RELEASE SORT-RECORD FROM IN-RECORD
+           END-READ.
+
+       INPUT-PROC.
+           OPEN INPUT IN-FILE.
+           PERFORM READ-PARA UNTIL WS-EOF = 'Y'.
+           CLOSE IN-FILE.
+
+       OUTPUT-PROC.
+           OPEN OUTPUT OUT-FILE.
+           RETURN SORT-FILE
+               AT END MOVE 'Y' TO WS-EOF
+               NOT AT END
+                   MOVE SORT-RECORD TO OUT-RECORD
+                   WRITE OUT-RECORD
+           END-RETURN.
+           CLOSE OUT-FILE.
