@@ -1,0 +1,40 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. MERGEPROG.
+
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT FILE1 ASSIGN TO FILE1.
+           SELECT FILE2 ASSIGN TO FILE2.
+           SELECT OUT-FILE ASSIGN TO OUT-FILE.
+
+       DATA DIVISION.
+       FILE SECTION.
+       FD FILE1.
+       01 REC1 PIC X(80).
+       FD FILE2.
+       01 REC2 PIC X(80).
+       FD OUT-FILE.
+       01 OUT-REC PIC X(80).
+
+       WORKING-STORAGE SECTION.
+       01 WS-EOF PIC X VALUE 'N'.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           OPEN INPUT FILE1 FILE2.
+           OPEN OUTPUT OUT-FILE.
+           MERGE OUT-REC
+               ON ASCENDING KEY OUT-REC
+               USING FILE1 FILE2
+               OUTPUT PROCEDURE IS MERGE-OUT.
+           CLOSE OUT-FILE.
+           STOP RUN.
+
+       MERGE-OUT.
+           RETURN OUT-REC
+               AT END MOVE 'Y' TO WS-EOF
+               NOT AT END
+                   WRITE OUT-REC
+           END-RETURN.
+           IF WS-EOF = 'N' GO TO MERGE-OUT.
