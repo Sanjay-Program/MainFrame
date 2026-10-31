@@ -1,0 +1,47 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. REPORTPROG.
+
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT IN-FILE ASSIGN TO IN-FILE.
+
+       DATA DIVISION.
+       FILE SECTION.
+       FD IN-FILE.
+       01 IN-RECORD.
+           05 WS-DEPT PIC X(10).
+           05 WS-EMP PIC X(20).
+           05 WS-SAL PIC 9(7).
+
+       WORKING-STORAGE SECTION.
+       01 WS-PREV-DEPT PIC X(10) VALUE SPACES.
+       01 WS-DEPT-TOTAL PIC 9(9) VALUE 0.
+       01 WS-GRAND-TOTAL PIC 9(9) VALUE 0.
+       01 WS-EOF PIC X VALUE 'N'.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           OPEN INPUT IN-FILE.
+           PERFORM READ-PARA UNTIL WS-EOF = 'Y'.
+           DISPLAY 'GRAND TOTAL ' WS-GRAND-TOTAL.
+           CLOSE IN-FILE.
+           STOP RUN.
+
+       READ-PARA.
+           READ IN-FILE
+               AT END MOVE 'Y' TO WS-EOF
+               NOT AT END PERFORM PROCESS-REC
+           END-READ.
+
+       PROCESS-REC.
+           IF WS-DEPT NOT = WS-PREV-DEPT
+               IF WS-PREV-DEPT NOT = SPACES
+                   DISPLAY 'DEPT TOTAL ' WS-PREV-DEPT WS-DEPT-TOTAL
+                   MOVE WS-DEPT-TOTAL TO WS-GRAND-TOTAL ADD WS-GRAND-TOTAL
+               END-IF
+               MOVE WS-DEPT TO WS-PREV-DEPT
+               MOVE 0 TO WS-DEPT-TOTAL
+           END-IF.
+           ADD WS-SAL TO WS-DEPT-TOTAL.
+           DISPLAY WS-DEPT WS-EMP WS-SAL.
