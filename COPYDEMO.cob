@@ -1,0 +1,28 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. COPYDEMO.
+
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT IN-FILE ASSIGN TO IN-FILE.
+
+       DATA DIVISION.
+       FILE SECTION.
+       FD IN-FILE.
+       COPY INREC.
+
+       WORKING-STORAGE SECTION.
+       01 WS-EOF PIC X VALUE 'N'.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           OPEN INPUT IN-FILE.
+           PERFORM READ-PARA UNTIL WS-EOF = 'Y'.
+           CLOSE IN-FILE.
+           STOP RUN.
+
+       READ-PARA.
+           READ IN-FILE
+               AT END MOVE 'Y' TO WS-EOF
+               NOT AT END DISPLAY IN-RECORD
+           END-READ.
