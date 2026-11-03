@@ -1,0 +1,21 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. SUBTRACTCORR.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-GROUP1.
+           05 WS-A PIC 9(3) VALUE 10.
+           05 WS-B PIC 9(3) VALUE 20.
+           05 WS-C PIC 9(3) VALUE 30.
+       01 WS-GROUP2.
+           05 WS-A PIC 9(3) VALUE 1.
+           05 WS-B PIC 9(3) VALUE 2.
+           05 WS-C PIC 9(3) VALUE 3.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           SUBTRACT CORRESPONDING WS-GROUP2 FROM WS-GROUP1.
+           DISPLAY WS-A OF WS-GROUP1.
+           DISPLAY WS-B OF WS-GROUP1.
+           DISPLAY WS-C OF WS-GROUP1.
+           STOP RUN.
