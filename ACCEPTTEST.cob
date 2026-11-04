@@ -1,0 +1,29 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. ACCEPTTEST.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-NAME PIC X(20).
+       01 WS-DATE PIC X(26).
+       01 WS-DAY PIC 9(3).
+       01 WS-TIME PIC X(8).
+       01 WS-NUM PIC 9(5).
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           DISPLAY 'ENTER NAME: ' WITH NO ADVANCING.
+           ACCEPT WS-NAME.
+
+           ACCEPT WS-DATE FROM DATE.
+           ACCEPT WS-DAY FROM DAY.
+           ACCEPT WS-TIME FROM TIME.
+
+           DISPLAY 'NAME IS ' WS-NAME.
+           DISPLAY WS-DATE.
+           DISPLAY WS-DAY.
+           DISPLAY WS-TIME.
+
+           DISPLAY 'ENTER NUMBER: ' WITH NO ADVANCING.
+           ACCEPT WS-NUM.
+           DISPLAY 'NUMBER IS ' WS-NUM.
+           STOP RUN.
