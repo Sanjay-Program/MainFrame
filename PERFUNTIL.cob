@@ -1,0 +1,16 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. PERFUNTIL.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-I PIC 9(3) VALUE 1.
+       01 WS-SUM PIC 9(4) VALUE 0.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           PERFORM WITH TEST AFTER UNTIL WS-I > 5
+               COMPUTE WS-SUM = WS-SUM + WS-I
+               COMPUTE WS-I = WS-I + 1
+           END-PERFORM.
+           DISPLAY WS-SUM.
+           STOP RUN.
