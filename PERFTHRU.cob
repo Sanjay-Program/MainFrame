@@ -1,0 +1,28 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. PERFTHRU.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-I PIC 9(3) VALUE 0.
+       01 WS-TOTAL PIC 9(4) VALUE 0.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           PERFORM INIT-PARA.
+           PERFORM CALC-PARA THRU CALC-END.
+           PERFORM SHOW-PARA.
+           STOP RUN.
+
+       INIT-PARA.
+           MOVE 0 TO WS-I.
+           MOVE 0 TO WS-TOTAL.
+
+       CALC-PARA.
+           COMPUTE WS-TOTAL = WS-TOTAL + WS-I.
+
+       CALC-END.
+           COMPUTE WS-I = WS-I + 1.
+           IF WS-I < 10 GO TO CALC-PARA.
+
+       SHOW-PARA.
+           DISPLAY WS-TOTAL.
