@@ -1,0 +1,20 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. GOTODEMO.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-I PIC 9(3) VALUE 0.
+       01 WS-FLAG PIC X VALUE 'N'.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 10
+               IF WS-I = 5 GO TO EXIT-POINT.
+               DISPLAY WS-I.
+           END-PERFORM.
+           DISPLAY 'LOOP FINISHED NORMALLY'.
+           STOP RUN.
+
+       EXIT-POINT.
+           DISPLAY 'EXITED AT ' WS-I.
+           STOP RUN.
