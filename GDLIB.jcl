@@ -1,0 +1,11 @@
+//GDLIB    JOB (ACCT),'GENERATION DATA GROUP',CLASS=A,MSGCLASS=X,
+//             NOTIFY=&SYSUID,REGION=4M
+//STEP1    EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+       DEFINE GENERATIONDATAGROUP -
+               (NAME(USER.GDG.TEST) -
+               LIMIT(10) -
+               EMPTY -
+               SCRATCH)
+/*
