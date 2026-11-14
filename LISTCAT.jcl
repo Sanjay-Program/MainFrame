@@ -1,0 +1,10 @@
+//LISTCAT    JOB (ACCT),'LISTCAT VSAM',CLASS=A,MSGCLASS=X,
+//             NOTIFY=&SYSUID,REGION=4M
+//STEP1    EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+       LISTCAT -
+               ENTRIES(USER.VSAM.*) -
+               ALL
+       IF LASTCC = 0 THEN SET MAXCC = 0
+/*
