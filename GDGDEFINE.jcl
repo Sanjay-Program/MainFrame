@@ -1,0 +1,12 @@
+//GDGDEFINE  JOB (ACCT),'DEFINE GDG BASE',CLASS=A,MSGCLASS=X,
+//             NOTIFY=&SYSUID,REGION=4M
+//STEP1    EXEC PGM=IDCAMS
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+       DEFINE GENERATIONDATAGROUP -
+               (NAME(USER.GDG.TEST) -
+               LIMIT(10) -
+               EMPTY -
+               SCRATCH)
+       IF LASTCC = 0 THEN SET MAXCC = 0
+/*
