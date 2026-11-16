@@ -1,0 +1,34 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. DB2CURSOR.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       EXEC SQL INCLUDE SQLCA END-EXEC.
+       01 WS-EMP-NAME PIC X(20).
+       01 WS-DEPT PIC X(10).
+       01 WS-EOF PIC X VALUE 'N'.
+
+       EXEC SQL DECLARE C1 CURSOR FOR
+           SELECT EMP_NAME, DEPT FROM EMPLOYEE
+           WHERE DEPT = 'SALES'
+           FOR READ ONLY
+       END-EXEC.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           EXEC SQL OPEN C1 END-EXEC.
+           IF SQLCODE NOT = 0
+               DISPLAY 'OPEN ERROR ' SQLCODE
+               STOP RUN
+           END-IF.
+           PERFORM FETCH-PARA UNTIL WS-EOF = 'Y'.
+           EXEC SQL CLOSE C1 END-EXEC.
+           STOP RUN.
+
+       FETCH-PARA.
+           EXEC SQL FETCH C1 INTO :WS-EMP-NAME, :WS-DEPT END-EXEC.
+           IF SQLCODE = 0
+               DISPLAY WS-EMP-NAME WS-DEPT
+           ELSE
+               MOVE 'Y' TO WS-EOF
+           END-IF.
