@@ -1,0 +1,25 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. DB2SELECT.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       EXEC SQL INCLUDE SQLCA END-EXEC.
+       01 WS-EMP-ID PIC 9(5) VALUE 10001.
+       01 WS-EMP-NAME PIC X(20).
+       01 WS-SALARY PIC 9(7)V99.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           EXEC SQL
+               SELECT EMP_NAME, SALARY INTO :WS-EMP-NAME, :WS-SALARY
+               FROM EMPLOYEE
+               WHERE EMP_ID = :WS-EMP-ID
+           END-EXEC.
+           IF SQLCODE = 0
+               DISPLAY WS-EMP-NAME WS-SALARY
+           ELSE IF SQLCODE = 100
+               DISPLAY 'NO ROW FOUND'
+           ELSE
+               DISPLAY 'SQL ERROR ' SQLCODE
+           END-IF.
+           STOP RUN.
