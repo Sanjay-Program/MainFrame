@@ -1,0 +1,22 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. DB2UPDATE.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       EXEC SQL INCLUDE SQLCA END-EXEC.
+       01 WS-EMP-ID PIC 9(5) VALUE 10001.
+       01 WS-NEW-SAL PIC 9(7)V99 VALUE 7500000.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           EXEC SQL
+               UPDATE EMPLOYEE SET SALARY = :WS-NEW-SAL
+               WHERE EMP_ID = :WS-EMP-ID
+           END-EXEC.
+           IF SQLCODE = 0
+               DISPLAY 'UPDATED ROWS ' SQLERRD(3)
+           ELSE
+               DISPLAY 'UPDATE FAILED ' SQLCODE
+           END-IF.
+           EXEC SQL COMMIT END-EXEC.
+           STOP RUN.
