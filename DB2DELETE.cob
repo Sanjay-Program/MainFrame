@@ -1,0 +1,20 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. DB2DELETE.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       EXEC SQL INCLUDE SQLCA END-EXEC.
+       01 WS-EMP-ID PIC 9(5) VALUE 50001.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           EXEC SQL
+               DELETE FROM EMPLOYEE WHERE EMP_ID = :WS-EMP-ID
+           END-EXEC.
+           IF SQLCODE = 0
+               DISPLAY 'DELETED ROWS ' SQLERRD(3)
+           ELSE
+               DISPLAY 'DELETE FAILED ' SQLCODE
+           END-IF.
+           EXEC SQL COMMIT END-EXEC.
+           STOP RUN.
