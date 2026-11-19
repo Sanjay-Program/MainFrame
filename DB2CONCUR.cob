@@ -1,0 +1,36 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. DB2CONCUR.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       EXEC SQL INCLUDE SQLCA END-EXEC.
+       01 WS-EMP-NAME PIC X(20).
+       01 WS-SALARY PIC 9(7)V99.
+       01 WS-EOF PIC X VALUE 'N'.
+
+       EXEC SQL DECLARE C3 CURSOR FOR
+           SELECT EMP_NAME, SALARY FROM EMPLOYEE
+           WHERE DEPT = 'SALES'
+           FOR UPDATE OF SALARY
+           WITH HOLD
+       END-EXEC.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           EXEC SQL OPEN C3 END-EXEC.
+           PERFORM FETCH-PARA UNTIL WS-EOF = 'Y'.
+           EXEC SQL CLOSE C3 END-EXEC.
+           EXEC SQL COMMIT END-EXEC.
+           STOP RUN.
+
+       FETCH-PARA.
+           EXEC SQL FETCH C3 INTO :WS-EMP-NAME, :WS-SALARY END-EXEC.
+           IF SQLCODE = 0
+               EXEC SQL
+                   UPDATE EMPLOYEE SET SALARY = SALARY * 1.1
+                   WHERE CURRENT OF C3
+               END-EXEC
+               DISPLAY WS-EMP-NAME WS-SALARY
+           ELSE
+               MOVE 'Y' TO WS-EOF
+           END-IF.
