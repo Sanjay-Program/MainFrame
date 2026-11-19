@@ -1,0 +1,20 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. DB2PROC.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       EXEC SQL INCLUDE SQLCA END-EXEC.
+       01 WS-EMP-ID PIC 9(5) VALUE 10001.
+       01 WS-BONUS PIC 9(7)V99.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           EXEC SQL
+               CALL CALC_BONUS(:WS-EMP-ID, :WS-BONUS)
+           END-EXEC.
+           IF SQLCODE = 0
+               DISPLAY 'BONUS ' WS-BONUS
+           ELSE
+               DISPLAY 'PROC ERROR ' SQLCODE
+           END-IF.
+           STOP RUN.
