@@ -1,0 +1,89 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. CAPSTONE.
+
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT CUST-FILE ASSIGN TO CUST-FILE.
+           SELECT ACCT-FILE ASSIGN TO ACCT-FILE.
+           SELECT RPT-FILE ASSIGN TO RPT-FILE.
+
+       DATA DIVISION.
+       FILE SECTION.
+       FD CUST-FILE.
+       01 CUST-RECORD.
+           05 CUST-ACCT-NO PIC 9(6).
+           05 CUST-NAME PIC X(30).
+           05 CUST-BALANCE PIC 9(7)V99.
+       FD ACCT-FILE.
+       01 ACCT-RECORD.
+           05 ACCT-NO PIC 9(6).
+           05 ACCT-TYPE PIC X(3).
+           05 ACCT-AMOUNT PIC 9(7)V99.
+       FD RPT-FILE.
+       01 RPT-RECORD PIC X(120).
+
+       WORKING-STORAGE SECTION.
+       01 WS-EOF PIC X VALUE 'N'.
+       01 WS-TOTAL-BALANCE PIC 9(9)V99 VALUE 0.
+       01 WS-REC-COUNT PIC 9(6) VALUE 0.
+       01 WS-LINE PIC X(120).
+       01 WS-CHOICE PIC 9 VALUE 0.
+       01 WS-ACCT-NO PIC 9(6).
+       01 WS-AMOUNT PIC 9(7)V99.
+       01 WS-BALANCE PIC 9(7)V99.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           DISPLAY 'MAINFRAME CAPSTONE BANKING SYSTEM'.
+           DISPLAY '1. PROCESS CUSTOMER FILES'.
+           DISPLAY '2. GENERATE REPORT'.
+           DISPLAY '3. EXIT'.
+           DISPLAY 'ENTER CHOICE: ' WITH NO ADVANCING.
+           ACCEPT WS-CHOICE.
+
+           EVALUATE WS-CHOICE
+               WHEN 1 PERFORM PROCESS-FILES
+               WHEN 2 PERFORM GENERATE-REPORT
+               WHEN 3 DISPLAY 'GOODBYE'
+               WHEN OTHER DISPLAY 'INVALID CHOICE'
+           END-EVALUATE.
+           STOP RUN.
+
+       PROCESS-FILES.
+           OPEN INPUT CUST-FILE ACCT-FILE.
+           PERFORM READ-CUST UNTIL WS-EOF = 'Y'.
+           CLOSE CUST-FILE ACCT-FILE.
+           DISPLAY 'TOTAL RECORDS ' WS-REC-COUNT.
+           DISPLAY 'TOTAL BALANCE ' WS-TOTAL-BALANCE.
+
+       READ-CUST.
+           READ CUST-FILE
+               AT END MOVE 'Y' TO WS-EOF
+               NOT AT END
+                   COMPUTE WS-REC-COUNT = WS-REC-COUNT + 1
+                   COMPUTE WS-TOTAL-BALANCE = WS-TOTAL-BALANCE + CUST-BALANCE
+                   DISPLAY CUST-ACCT-NO CUST-NAME CUST-BALANCE
+           END-READ.
+
+       GENERATE-REPORT.
+           OPEN OUTPUT RPT-FILE.
+           MOVE 'CUSTOMER BALANCE REPORT' TO WS-LINE.
+           WRITE RPT-RECORD FROM WS-LINE.
+           MOVE '----------------------------' TO WS-LINE.
+           WRITE RPT-RECORD FROM WS-LINE.
+           OPEN INPUT CUST-FILE.
+           PERFORM READ-REPORT UNTIL WS-EOF = 'Y'.
+           CLOSE CUST-FILE RPT-FILE.
+           DISPLAY 'REPORT GENERATED'.
+
+       READ-REPORT.
+           READ CUST-FILE
+               AT END MOVE 'Y' TO WS-EOF
+               NOT AT END
+                   STRING 'ACCT: ' CUST-ACCT-NO
+                           ' NAME: ' CUST-NAME
+                           ' BALANCE: ' CUST-BALANCE
+                           DELIMITED BY SIZE INTO WS-LINE
+                   WRITE RPT-RECORD FROM WS-LINE
+           END-READ.
