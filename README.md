@@ -31,6 +31,4 @@ DEFINEKSDS.jcl, DEFINEESDS.jcl, DEFINERRDS.jcl, REPROJCL.jcl, LISTCAT.jcl, DELET
 ### Capstone (Project Explanation and Troubleshooting)
 CAPSTONE.cob, CAPSTONEJCL.jcl
 
-## Timeline
 
-Daily practice commits from 21 October 2026 to 21 November 2026, 08:00–14:30 IST, one concept per commit.
