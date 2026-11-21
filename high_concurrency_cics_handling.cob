@@ -1,6 +1,3 @@
-*>================================================================*
-*> FULL WORKABLE GNUCOLBOL SIMULATION OF CICS VSAM CONCURRENCY     *
-*>================================================================*
 IDENTIFICATION DIVISION.
 PROGRAM-ID. BRNUPD01.
 AUTHOR. SANJAY-CORE-BANKING.
@@ -65,9 +62,7 @@ PROCEDURE DIVISION.
     CLOSE CUSTKSDS BRNMSTR.
     STOP RUN.
 
-*>================================================================*
-*> 1000: AUTO-CREATE SAMPLE DATA IF FILES DO NOT EXIST YET        *
-*>================================================================*
+
 1000-INIT-SAMPLE-FILES.
     OPEN I-O CUSTKSDS.
     IF WS-CUST-FS = "35"
@@ -96,9 +91,7 @@ PROCEDURE DIVISION.
         OPEN I-O BRNMSTR
     END-IF.
 
-*>================================================================*
-*> 2000: SIMULATE BMS TELLER SCREEN INPUT                         *
-*>================================================================*
+
 2000-GET-TELLER-INPUT.
     DISPLAY "==================================================".
     DISPLAY "   CORE BANKING TELLER DEPOSIT (CICS SIMULATION)  ".
@@ -120,9 +113,7 @@ PROCEDURE DIVISION.
         WITH NO ADVANCING.
     ACCEPT WS-SIMULATE-DELAY.
 
-*>================================================================*
-*> 3000: STRICT LOCK ORDERING (1. CUSTOMER -> 2. BRANCH)          *
-*>================================================================*
+
 3000-PROCESS-DEPOSIT.
     *> --- STEP 1: LOCK CUSTOMER ACCOUNT FIRST ---
     MOVE WS-IN-CUST-ID TO CUST-ID.
@@ -173,9 +164,7 @@ PROCEDURE DIVISION.
     DISPLAY "Updated Branch   (" BRN-CODE ") Total  : " WS-DISP-AMT.
     DISPLAY "--------------------------------------------------".
 
-*>================================================================*
-*> 4000: RETRY ENGINE FOR CUSTOMER FILE (HANDLES FS="51")         *
-*>================================================================*
+
 4000-LOCK-CUSTOMER-WITH-RETRY.
     MOVE 0 TO WS-RETRY-CNT.
     SET LOCK-NOT-ACQUIRED TO TRUE.
@@ -199,9 +188,7 @@ PROCEDURE DIVISION.
         END-EVALUATE
     END-PERFORM.
 
-*>================================================================*
-*> 5000: RETRY ENGINE FOR BRANCH FILE (HANDLES FS="51")           *
-*>================================================================*
+
 5000-LOCK-BRANCH-WITH-RETRY.
     MOVE 0 TO WS-RETRY-CNT.
     SET LOCK-NOT-ACQUIRED TO TRUE.
